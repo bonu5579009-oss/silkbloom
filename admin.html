@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel | SilkBloom</title>
+    <title>Admin Panel | Lutfiya Market</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -135,7 +135,7 @@
 <body>
     <header>
         <nav class="container">
-            <div class="logo">Silk<span>Bloom</span> Admin</div>
+            <div class="logo">Lutfiya <span>Market</span> Admin</div>
             <a href="index.html" class="btn btn-secondary btn-sm">Saytga qaytish</a>
         </nav>
     </header>
@@ -226,8 +226,16 @@
                     <input type="number" id="p-price" required>
                 </div>
                 <div class="form-group">
-                    <label>Belgi (Emoji)</label>
-                    <input type="text" id="p-icon" placeholder="рџЊ№" required>
+                    <label>Belgi (Emoji) - Agar rasm bo'lmasa</label>
+                    <input type="text" id="p-icon" placeholder="рџЊ№">
+                </div>
+                <div class="form-group">
+                    <label>Rasm URL (Internetdan)</label>
+                    <input type="url" id="p-img-url" placeholder="https://example.com/flower.jpg">
+                </div>
+                <div class="form-group">
+                    <label>Yoki rasm yuklash (Kompyuterdan)</label>
+                    <input type="file" id="p-img-file" accept="image/*">
                 </div>
                 <div class="form-group">
                     <label>Tavsif</label>
