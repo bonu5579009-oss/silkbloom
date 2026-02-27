@@ -637,32 +637,120 @@ footer {
     transition: var(--transition);
 }
 
-.overlay.active {
-    visibility: visible;
-    opacity: 1;
+gap: 5px;
+cursor: pointer;
+z-index: 1001;
 }
 
-/* Responsive */
+.hamburger span {
+    width: 25px;
+    height: 3px;
+    background: var(--primary);
+    transition: var(--transition);
+    border-radius: 5px;
+}
+
+.hamburger.active span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Responsive Updates */
 @media (max-width: 768px) {
+    .hamburger {
+        display: flex;
+    }
+
+    header {
+        padding: 0.8rem 0;
+    }
+
     .nav-links {
-        display: none;
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 80%;
+        height: 100vh;
+        background: var(--light);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 3rem;
+        transition: 0.5s ease;
+        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+        display: flex;
+        /* Override display:none from previous version */
+    }
+
+    .nav-links.active {
+        right: 0;
     }
 
     .hero h1 {
-        font-size: 2.5rem;
+        font-size: 2.8rem;
     }
 
-    .footer-grid {
-        grid-template-columns: 1fr;
+    .hero p {
+        font-size: 1.1rem;
+    }
+
+    .section-title {
+        font-size: 2rem;
+        margin-bottom: 3rem;
     }
 
     .about-flex {
-        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .about-img {
+        height: 350px;
     }
 
     .cart-drawer {
         width: 100%;
         right: -100%;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 1.5rem;
+    }
+
+    .hero h1 {
+        font-size: 2.2rem;
+    }
+
+    .hero-btns {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .hero-btns .btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .product-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-content {
+        padding: 2rem;
     }
 }
 
