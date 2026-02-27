@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | SilkBloom</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #f4f7f6;
+        }
+
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: var(--primary);
+            color: white;
+            padding: 2rem;
+            position: fixed;
+            height: calc(100vh - 80px);
+        }
+
+        .main-content {
+            margin-left: 250px;
+            flex: 1;
+            padding: 3rem;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            margin-top: 2rem;
+        }
+
+        .sidebar li {
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            color: white;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 2.5rem;
+            margin-top: 0.5rem;
+            color: var(--primary);
+        }
+
+        .admin-section {
+            display: none;
+        }
+
+        .admin-section.active {
+            display: block;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .admin-table th,
+        .admin-table td {
+            padding: 1.2rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .admin-table th {
+            background: #f9f9f9;
+            color: var(--primary);
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+        }
+
+        .btn-delete {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-add {
+            margin-bottom: 2rem;
+        }
+
+        #add-product-modal .modal-content {
+            max-width: 600px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">Silk<span>Bloom</span> Admin</div>
+            <a href="index.html" class="btn btn-secondary btn-sm">Saytga qaytish</a>
+        </nav>
+    </header>
+
+    <div class="admin-container">
+        <aside class="sidebar">
+            <ul>
+                <li><a href="#" class="admin-nav active" data-target="dashboard">Dashboard</a></li>
+                <li><a href="#" class="admin-nav" data-target="products-manage">Mahsulotlar</a></li>
+                <li><a href="#" class="admin-nav" data-target="orders-manage">Buyurtmalar</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="admin-section active">
+                <h2 style="margin-bottom: 2rem;">Boshqaruv Paneli</h2>
+                <div class="stat-grid">
+                    <div class="stat-card glass">
+                        <p>Jami Mahsulotlar</p>
+                        <h3 id="stat-products">0</h3>
+                    </div>
+                    <div class="stat-card glass">
+                        <p>Jami Buyurtmalar</p>
+                        <h3 id="stat-orders">0</h3>
+                    </div>
+                    <div class="stat-card glass">
+                        <p>Mijozlar</p>
+                        <h3 id="stat-users">0</h3>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Products Management -->
+            <section id="products-manage" class="admin-section">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h2>Mahsulotlarni Boshqarish</h2>
+                    <button class="btn btn-primary btn-add" id="open-add-product">Yangi Qo'shish</button>
+                </div>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Rasm</th>
+                            <th>Nomi</th>
+                            <th>Narxi</th>
+                            <th>Amallar</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-product-list">
+                        <!-- Products listed here -->
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Orders Management -->
+            <section id="orders-manage" class="admin-section">
+                <h2 style="margin-bottom: 2rem;">Kelib tushgan Buyurtmalar</h2>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Sana</th>
+                            <th>Mijoz</th>
+                            <th>Tel</th>
+                            <th>Ma'lumot</th>
+                            <th>Summa</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-order-list">
+                        <!-- Orders listed here -->
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+
+    <!-- Add Product Modal -->
+    <div id="add-product-modal" class="modal">
+        <div class="modal-content glass">
+            <button id="close-add-modal" class="close-btn">&times;</button>
+            <h2>Yangi Mahsulot Qo'shish</h2>
+            <form id="add-product-form">
+                <div class="form-group">
+                    <label>Mahsulot Nomi</label>
+                    <input type="text" id="p-name" required>
+                </div>
+                <div class="form-group">
+                    <label>Narxi (UZS)</label>
+                    <input type="number" id="p-price" required>
+                </div>
+                <div class="form-group">
+                    <label>Belgi (Emoji)</label>
+                    <input type="text" id="p-icon" placeholder="рџЊ№" required>
+                </div>
+                <div class="form-group">
+                    <label>Tavsif</label>
+                    <input type="text" id="p-desc">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Saqlash</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="overlay" class="overlay"></div>
+
+    <script src="app.js"></script>
+    <script>
+        // Separate script for Admin specific UI toggles if needed, 
+        // but we'll try to keep logic in app.js for consistency
+    </script>
+</body>
+
+</html>
