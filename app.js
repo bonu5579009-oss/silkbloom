@@ -66,7 +66,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const products = getProducts();
         productGrid.innerHTML = products.map(p => `
             <div class="product-card glass">
-                <div class="product-img" id="${p.id}">${p.icon}</div>
+                ${p.image ?
+                `<div class="product-img" style="background-image: url('${p.image}'); background-size: cover; background-position: center;"></div>` :
+                `<div class="product-img" id="${p.id}">${p.icon || 'рџЊё'}</div>`
+            }
                 <div class="product-info">
                     <h3>${p.name}</h3>
                     <p>${p.desc || ''}</p>
@@ -102,7 +105,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         adminProductList.innerHTML = products.map(p => `
             <tr>
-                <td style="font-size: 2rem;">${p.icon}</td>
+                <td>
+                    ${p.image ?
+                `<div style="width: 50px; height: 50px; background-image: url('${p.image}'); background-size: cover; border-radius: 8px;"></div>` :
+                `<span style="font-size: 1.5rem;">${p.icon || 'рџЊё'}</span>`
+            }
+                </td>
                 <td>${p.name}</td>
                 <td>${formatPrice(p.price)}</td>
                 <td class="action-btns">
@@ -134,7 +142,10 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             cartItemsContainer.innerHTML = cart.map(item => `
                 <div class="cart-item">
-                    <div class="item-img">${item.icon}</div>
+                    ${item.image ?
+                    `<div class="item-img" style="background-image: url('${item.image}'); background-size: cover;"></div>` :
+                    `<div class="item-img">${item.icon || 'рџЊё'}</div>`
+                }
                     <div class="item-details">
                         <h4>${item.name}</h4>
                         <p>${formatPrice(item.price)} x ${item.quantity}</p>
@@ -267,17 +278,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Admin - Add Product
     const addProductForm = document.getElementById('add-product-form');
-    if (addProductForm) addProductForm.onsubmit = (e) => {
+    if (addProductForm) addProductForm.onsubmit = async (e) => {
         e.preventDefault();
         const name = document.getElementById('p-name').value;
         const price = document.getElementById('p-price').value;
         const icon = document.getElementById('p-icon').value;
+        const url = document.getElementById('p-img-url').value;
+        const fileInput = document.getElementById('p-img-file');
         const desc = document.getElementById('p-desc').value;
 
+        let image = url || null;
+
+        if (fileInput.files && fileInput.files[0]) {
+            const reader = new FileReader();
+            image = await new Promise((resolve) => {
+                reader.onload = (re) => resolve(re.target.result);
+                reader.readAsDataURL(fileInput.files[0]);
+            });
+        }
+
         const products = getProducts();
-        products.push({ id: 'p' + Date.now(), name, price, icon, desc });
+        products.push({ id: 'p' + Date.now(), name, price, icon, desc, image });
         localStorage.setItem('products', JSON.stringify(products));
 
+        renderProducts();
         renderAdminDashboard();
         closeAllModals();
         addProductForm.reset();
