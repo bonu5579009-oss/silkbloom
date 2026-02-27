@@ -43,6 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const registerView = document.getElementById('register-view');
     const toRegister = document.getElementById('to-register');
     const toLogin = document.getElementById('to-login');
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.querySelector('.nav-links');
 
     // Admin Page Elements
     const adminProductList = document.getElementById('admin-product-list');
@@ -183,6 +185,8 @@ document.addEventListener('DOMContentLoaded', () => {
         [authModal, orderModal, cartDrawer, document.getElementById('add-product-modal')].forEach(m => {
             if (m) m.classList.remove('active');
         });
+        if (navLinks) navLinks.classList.remove('active');
+        if (hamburger) hamburger.classList.remove('active');
         overlay.classList.remove('active');
     };
 
@@ -306,6 +310,29 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('summary-items').textContent = cart.reduce((s, i) => s + i.quantity, 0) + 'ta mahsulot';
         document.getElementById('summary-total').textContent = formatPrice(cart.reduce((s, i) => s + (i.price * i.quantity), 0));
     };
+
+    // Hamburger Toggle
+    if (hamburger) {
+        hamburger.onclick = () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            // Overlay only on mobile if menu is active
+            if (navLinks.classList.contains('active')) {
+                overlay.classList.add('active');
+            } else {
+                overlay.classList.remove('active');
+            }
+        };
+    }
+
+    // Close menu on link click
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navLinks.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+    });
 
     // --- Misc & Initialization ---
     const intersectionObserver = new IntersectionObserver((entries) => {
